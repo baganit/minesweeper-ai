@@ -1,4 +1,5 @@
 #Minesweeper AI Project 
+
 Contributors:
 - Aleksander Kurz (@)
 - Przemysław Bagan (@baganit) 
