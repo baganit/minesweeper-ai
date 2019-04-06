@@ -7,5 +7,9 @@
 - Weronika Olejniczka *(@weronikaolejniczak)*
 
 ## Environment setup and dependencies
+Project written in Python using Pygame module.
 
 ## TODO
+- Knowledge representation techniques
+- Route planning
+- Machine learning
