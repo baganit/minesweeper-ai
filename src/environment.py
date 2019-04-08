@@ -69,6 +69,7 @@ cursor = pygame.image.load("resources/cursor.png")
 cursor_on_bomb = pygame.image.load("resources/cursor_on_bomb.png")
 boom = pygame.image.load("resources/boom.png")
 flag = pygame.image.load("resources/flag.png")
+circle = pygame.image.load("resources/circle.png")
 bum = pygame.mixer.Sound("resources/bum.wav")
 
 clock = pygame.time.Clock()
@@ -83,9 +84,23 @@ while not x_clicked:
 
     pressed = pygame.mouse.get_pressed()
     pos = pygame.mouse.get_pos()
-    x = pos[0] // 50
-    y = pos[1] // 50
-    if pressed[0] and not end_game:
+
+    x = random.randint(0, 7)
+    y = random.randint(0, 7)
+    while uncovered[y][x] and not flags[y][x]:
+        x = random.randint(0, 7)
+        y = random.randint(0, 7)
+    z = random.randint(0, 1)
+
+    a1 = x
+    b1 = y
+    print(str(x) + " " + str(y))
+
+    # x = pos[0] // 50
+    # y = pos[1] // 50
+
+    if z == 0 and not end_game:
+
         if not uncovered[y][x] and not flags[y][x]:
             uncover_zeros(x, y)
             uncovered[y][x] = True
@@ -93,12 +108,16 @@ while not x_clicked:
                 end_game = True
                 bum.play()
         print(x, y)
-    if pressed[2] and not end_game:
+        pygame.time.wait(30)
+    if z == 1 and not end_game:
+
         if not uncovered[y][x] and not flag_placed:
             flags[y][x] = not flags[y][x]
         flag_placed = True
     else:
         flag_placed = False
+
+    pygame.time.wait(30)
 
     window.fill(0xFFFFFF)
 
@@ -106,10 +125,14 @@ while not x_clicked:
         for x in range(8):
             if uncovered[y][x]:
                 pygame.draw.rect(window, (192, 192, 192, 192), pygame.Rect(x * 50, y * 50, 50, 50))
+
                 if board[y][x] == '*':
                     window.blit(boom, (x * 50 - 50, y * 50 - 50))
+
                 elif board[y][x] != 0:
                     window.blit(font.render(str(board[y][x]), True, (0, 255, 0)), (x * 50 + 15, y * 50))
+
+
             else:
                 pass
             if flags[y][x]:
@@ -119,11 +142,13 @@ while not x_clicked:
         pygame.draw.line(window, 0x000000, (x * 50, 0), (x * 50, 400), 3)
     for x in range(9):
         pygame.draw.line(window, 0x000000, (0, x * 50), (400, x * 50), 3)
+    window.blit(circle, (a1 * 50, b1 * 50))
+    pygame.time.wait(1000)
+    # if not end_game:
+    #     window.blit(cursor, (pos[0], pos[1] - 20))
 
-    if not end_game:
-        window.blit(cursor, (pos[0], pos[1] - 20))
-    else:
-        window.blit(cursor_on_bomb, (pos[0] - 20, pos[1] - 110))
+    # else:
+    #    window.blit(cursor_on_bomb, (x, y))
 
     pygame.display.flip()
 
